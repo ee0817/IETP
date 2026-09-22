@@ -1,0 +1,14 @@
+# 检索后内容过滤模块配置
+
+# 白名单规则：只检查 chunk.source
+# type: suffix 表示域名后缀匹配；prefix 表示 URL 前缀匹配
+whitelist:
+  rules:
+    - type: suffix
+      pattern: "internal.company.com"
+    - type: prefix
+      pattern: "https://trusted.wiki.org/"
+
+# 审计日志
+audit:
+  db_path: "data/audit.db"
