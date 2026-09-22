@@ -8,7 +8,7 @@ def _make_chunk(content: str) -> RetrievedChunk:
     return RetrievedChunk(
         chunk_id="test-chunk-1",
         content=content,
-        source="https://example.com/doc",
+        source_id="https://example.com/doc",
         score=0.8,
         metadata={},
     )

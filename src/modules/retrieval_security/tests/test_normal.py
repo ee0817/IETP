@@ -8,7 +8,7 @@ def test_normal_whitelisted():
     chunk = RetrievedChunk(
         chunk_id="doc-001#chunk-3",
         content="公司内部安全策略要求所有员工定期更换密码。",
-        source="https://internal.company.com/policy",
+        source_id="https://internal.company.com/policy",
         score=0.92,
         metadata={"tenant": "tenant-a"},
     )

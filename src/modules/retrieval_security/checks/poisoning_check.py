@@ -92,8 +92,8 @@ def check(chunk: RetrievedChunk, query: str = "") -> SecurityEvent:
     if _special_char_ratio(content) > 0.3:
         score += _SCORE_SPECIAL_RATIO
 
-    # 规则 4：metadata 为空字典且 source 为 "unknown"
-    if not chunk.metadata and chunk.source == "unknown":
+    # 规则 4：metadata 为空字典且 source_id 为 "unknown"
+    if not chunk.metadata and chunk.source_id == "unknown":
         score += _SCORE_METADATA_MISSING
 
     # 得分限制在 0.0~1.0

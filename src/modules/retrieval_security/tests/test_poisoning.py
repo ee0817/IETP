@@ -4,11 +4,11 @@ from checks.poisoning_check import check
 from schemas import RetrievedChunk
 
 
-def _make_chunk(content: str, source: str = "https://example.com/doc", metadata=None) -> RetrievedChunk:
+def _make_chunk(content: str, source_id: str = "https://example.com/doc", metadata=None) -> RetrievedChunk:
     return RetrievedChunk(
         chunk_id="test-chunk-1",
         content=content,
-        source=source,
+        source_id=source_id,
         score=0.8,
         metadata=metadata if metadata is not None else {"tenant": "a"},
     )
@@ -42,7 +42,7 @@ def test_empty_content():
 
 
 def test_metadata_missing_unknown_source():
-    # metadata 为空且 source 为 "unknown"，应比正常文本得分更高
-    normal = check(_make_chunk("这是一段正常的文本内容", source="https://example.com", metadata={"k": "v"}), "q")
-    suspicious = check(_make_chunk("这是一段正常的文本内容", source="unknown", metadata={}), "q")
+    # metadata 为空且 source_id 为 "unknown"，应比正常文本得分更高
+    normal = check(_make_chunk("这是一段正常的文本内容", source_id="https://example.com", metadata={"k": "v"}), "q")
+    suspicious = check(_make_chunk("这是一段正常的文本内容", source_id="unknown", metadata={}), "q")
     assert suspicious.risk_score > normal.risk_score

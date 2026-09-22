@@ -1,6 +1,6 @@
 """白名单检测模块。
 
-只检查 chunk.source，从 config/whitelist.yaml 读取规则，支持三种匹配：
+只检查 chunk.source_id，从 config/whitelist.yaml 读取规则，支持三种匹配：
 1. domain_suffix：域名后缀匹配（带边界校验，防绕过）
 2. url_prefix：URL 前缀匹配
 3. exact：精确匹配
@@ -43,36 +43,36 @@ def _load_rules() -> list[dict[str, Any]]:
     return data.get("rules", []) or []
 
 
-def _extract_domain(source: str) -> str:
-    """从 source 中提取域名（netloc），用于 domain_suffix 匹配。
+def _extract_domain(source_id: str) -> str:
+    """从 source_id 中提取域名（netloc），用于 domain_suffix 匹配。
 
-    若 source 不含 scheme（纯域名），直接返回。
+    若 source_id 不含 scheme（纯域名），直接返回。
     """
-    if "://" not in source:
-        return source
+    if "://" not in source_id:
+        return source_id
     try:
-        parsed = urlparse(source)
-        return parsed.netloc or source
+        parsed = urlparse(source_id)
+        return parsed.netloc or source_id
     except Exception:  # noqa: BLE001
-        return source
+        return source_id
 
 
-def is_whitelisted(source: str) -> WhitelistResult:
-    """检查 source 是否命中白名单。
+def is_whitelisted(source_id: str) -> WhitelistResult:
+    """检查 source_id 是否命中白名单。
 
     Args:
-        source: RetrievedChunk.source
+        source_id: RetrievedChunk.source_id
 
     Returns:
         WhitelistResult，即 (是否命中, 命中的规则描述)。
-        source 为 "unknown" 或空字符串时直接返回 (False, "")。
+        source_id 为 "unknown" 或空字符串时直接返回 (False, "")。
     """
-    # source 为 "unknown" 或空字符串，直接视为未命中
-    if not source or source == "unknown":
+    # source_id 为 "unknown" 或空字符串，直接视为未命中
+    if not source_id or source_id == "unknown":
         return WhitelistResult(False, "")
 
-    norm = source.strip().lower()
-    domain = _extract_domain(source).strip().lower()
+    norm = source_id.strip().lower()
+    domain = _extract_domain(source_id).strip().lower()
 
     for rule in _load_rules():
         rule_type = (rule.get("type") or "").strip()

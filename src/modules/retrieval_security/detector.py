@@ -7,7 +7,7 @@
 
 执行流程：
 1. 遍历 documents，对每个 Chunk 依次执行：
-   a. source → 白名单检查（source 为 "unknown" 时视为未命中）
+   a. source_id → 白名单检查（source_id 为 "unknown" 时视为未命中）
       - 命中则跳过该 Chunk 的后续检测，返回 none 事件
    b. content → 指令/提示注入检测
    c. content / score → 投毒检测
@@ -66,9 +66,9 @@ def _detect_single_chunk(chunk: RetrievedChunk, query: str) -> SecurityEvent:
     Returns:
         SecurityEvent：该 Chunk 的安全事件（白名单命中时为 none 事件）。
     """
-    # 步骤 1：source → 白名单检查
-    # source 为 "unknown" 时，视为未命中白名单
-    if chunk.source and chunk.source != "unknown" and whitelist_check.is_whitelisted(chunk.source):
+    # 步骤 1：source_id → 白名单检查
+    # source_id 为 "unknown" 时，视为未命中白名单
+    if chunk.source_id and chunk.source_id != "unknown" and whitelist_check.is_whitelisted(chunk.source_id):
         # 命中白名单：跳过后续检测，返回无风险事件
         event = SecurityEvent(
             stage="retrieval",
@@ -153,7 +153,7 @@ def detect(query: str, documents: list[RetrievedChunk]) -> list[SecurityEvent]:
             logger.write_log(
                 max_event,
                 chunk_id=sample_chunk.chunk_id,
-                source=sample_chunk.source,
+                source_id=sample_chunk.source_id,
             )
         except Exception:  # noqa: BLE001
             # 日志写入失败不影响主流程返回结果

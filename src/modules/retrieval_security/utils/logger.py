@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS security_event_log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     stage TEXT NOT NULL,
     chunk_id TEXT,
-    source TEXT,
+    source_id TEXT,
     risk_score REAL,
     risk_type TEXT,
     confidence REAL,
@@ -47,7 +47,7 @@ def _get_connection(db_path: str | Path = DEFAULT_DB_PATH) -> sqlite3.Connection
 def write_log(
     event: SecurityEvent,
     chunk_id: str | None = None,
-    source: str | None = None,
+    source_id: str | None = None,
 ) -> int:
     """将 SecurityEvent 写入 SQLite，返回 log_id。
 
@@ -60,14 +60,14 @@ def write_log(
         cursor = conn.execute(
             """
             INSERT INTO security_event_log
-                (stage, chunk_id, source, risk_score, risk_type, confidence,
+                (stage, chunk_id, source_id, risk_score, risk_type, confidence,
                  action_taken, raw_event, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 event.stage,
                 chunk_id,
-                source,
+                source_id,
                 event.risk_score,
                 event.risk_type,
                 event.confidence,
