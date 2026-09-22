@@ -1,0 +1,19 @@
+# 检索来源可信度配置
+# 解析依赖：优先使用 PyYAML；环境无 PyYAML 时自动回退 config.py 内置默认值。
+# 匹配规则：对 Document.source（及 metadata.url）做大小写不敏感的子串匹配，
+#           按 sources 从上到下首次命中；均不命中时归为 unknown。
+# risk_score = 1 - trust_score；是否限制来源由 Policy Engine 决定，本模块只上报。
+
+levels:
+  official: 0.99   # 官方权威来源
+  internal: 0.90   # 企业内部可信来源
+  external: 0.55   # 外部来源（可信度有限）
+  unknown: 0.15    # 未知来源
+
+sources:
+  - {match: "official-docs.corp", level: official}
+  - {match: "gov.cn", level: official}
+  - {match: "wiki.corp", level: internal}
+  - {match: "confluence", level: internal}
+  - {match: "wikipedia.org", level: external}
+  - {match: "mozilla.org", level: external}
