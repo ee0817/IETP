@@ -1,0 +1,11 @@
+version: 1
+rules:
+  - type: domain_suffix
+    value: "internal.company.com"
+    note: "公司内部知识库"
+  - type: url_prefix
+    value: "https://trusted.wiki.org/"
+    note: "可信外部 Wiki"
+  - type: exact
+    value: "https://approved.example.com/doc-001"
+    note: "已审核文档"
