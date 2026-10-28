@@ -1,5 +1,7 @@
 # TODO: V0.1 极简测试版，仅用于接口联调。
 # 后续 V1 版本将引入 PPL 困惑度检测、语义离群分数、NLI 一致性校验。
+# TODO: V1.1 重新标定长度异常规则的权重——当前 content > 5000 字稳定 +0.3 分，
+# 与 detector 的 MAX_CONTENT_LENGTH(100k) 语义重叠，长而合法的文档易误报。
 
 """语义投毒检测模块（V0.1 极简测试版）。
 
@@ -92,8 +94,8 @@ def check(chunk: RetrievedChunk, query: str = "") -> SecurityEvent:
     if _special_char_ratio(content) > 0.3:
         score += _SCORE_SPECIAL_RATIO
 
-    # 规则 4：metadata 为空字典且 source_id 为 "unknown"
-    if not chunk.metadata and chunk.source_id == "unknown":
+    # 规则 4：metadata 为空字典且 source 为 "unknown"
+    if not chunk.metadata and chunk.source == "unknown":
         score += _SCORE_METADATA_MISSING
 
     # 得分限制在 0.0~1.0

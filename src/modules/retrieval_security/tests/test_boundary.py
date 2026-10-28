@@ -8,7 +8,7 @@ def test_boundary_low_risk():
     chunk = RetrievedChunk(
         chunk_id="doc-003#chunk-2",
         content="这是一段普通的业务文档。",
-        source_id="unknown",
+        source="unknown",
         score=0.75,
         metadata={},
     )
