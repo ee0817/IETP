@@ -15,7 +15,7 @@ from typing import Any, List, Optional, Tuple
 
 from .base import BaseDetector
 from .config import ADMIN_ONLY_RESOURCES
-from .schemas import RiskType, SecurityStage, UserContext
+from .schemas import RiskType, SecurityStage, UserContext, UserContextAdapter
 from .scoring import (
     evidence_snippet,
     hit_confidence,
@@ -182,7 +182,11 @@ class AccessControlDetector(BaseDetector):
 
     def detect(self, payload: Any, context: Any = None):
         text = str(payload or "")
-        user: Optional[UserContext] = context if isinstance(context, UserContext) else None
+        # UserContextAdapter 替代 isinstance：禁止静默匿名
+        # raise_on_invalid=True 时非法 context 直接 TypeError（开发期）；
+        # raise_on_invalid=False 时返回 None（此处选静默降级但记日志，
+        # 因为越权检测无法在非法 context 下判定，只能跳过）
+        user = UserContextAdapter.validate(context, raise_on_invalid=False)
         roles = user.roles if user else []
 
         denied: List[Tuple[str, str]] = []

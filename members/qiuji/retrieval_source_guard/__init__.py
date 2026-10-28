@@ -26,7 +26,10 @@ from .schemas import (
     RiskType,
     SecurityEvent,
     SecurityStage,
+    TrustResult,
+    TrustStatus,
     UserContext,
+    UserContextAdapter,
 )
 from .semantic import detect_semantic_outlier
 
@@ -55,6 +58,9 @@ __all__ = [
     "RiskType",
     "RetrievedChunk",
     "UserContext",
+    "UserContextAdapter",
+    "TrustResult",
+    "TrustStatus",
 ]
 
 __version__ = "1.2.0"

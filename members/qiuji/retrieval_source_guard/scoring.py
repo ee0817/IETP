@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .config import MaliciousKeyword
 from .schemas import SecurityEvent, SecurityStage
@@ -123,6 +123,7 @@ def make_event(
     evidence: Optional[List[str]] = None,
     chunk_id: Optional[str] = None,
     timestamp: Optional[str] = None,
+    details: Optional[Dict[str, Any]] = None,
 ) -> SecurityEvent:
     """统一事件构造入口，保证出参始终满足 SecurityEvent 约束。"""
     return SecurityEvent(
@@ -134,4 +135,5 @@ def make_event(
         evidence=evidence or [],
         chunk_id=chunk_id,
         timestamp=timestamp,
+        details=details or {},
     )
