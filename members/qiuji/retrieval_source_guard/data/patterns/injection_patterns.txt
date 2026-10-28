@@ -1,0 +1,22 @@
+# Prompt injection / 文档内嵌注入指令 规则表
+# 格式（Tab 分隔）：权重(0~1) <TAB> 规则标签 <TAB> 正则表达式
+# 匹配方式：re.IGNORECASE，每条规则取首个命中；以 # 开头为注释，空行忽略。
+# 权重 >= 0.75 视为强证据，可直接确认 prompt_injection / poisoned_document。
+#
+# ---------------- 英文 ----------------
+0.95	en_ignore_instructions	ignore\s+(?:all\s+|the\s+)?(?:previous|prior|above|earlier)\s+(?:instructions?|prompts?|context|rules)
+0.90	en_disregard_instructions	disregard\s+(?:all\s+|the\s+|any\s+)?(?:previous|prior|above)\s+(?:instructions?|prompts?|rules)
+0.90	en_forget_instructions	forget\s+(?:all\s+|your\s+|the\s+)?(?:previous|prior|earlier)\s+(?:instructions?|prompts?|rules)
+0.90	en_dan	do\s+anything\s+now|\bDAN\b
+0.85	en_reveal_system_prompt	(?:reveal|show|print|repeat|leak)\s+(?:me\s+)?(?:your|the)\s+(?:system\s+)?(?:prompt|instructions|initial\s+instructions)
+0.75	en_developer_mode	(?:enable|enter|activate)\s+developer\s+mode
+0.70	en_you_are_now	you\s+are\s+now\s+(?:a|an|in)\b
+0.55	en_new_instructions	new\s+instructions?\s*[:：]
+0.45	en_system_prompt	system\s+prompt
+# ---------------- 中文 ----------------
+0.95	zh_ignore_instructions	(?:忽略|无视|不管)(?:以上|之前|前面|上述|此前|所有|先前)[^\n。；;]{0,8}(?:指令|提示词?|要求|规则|内容)
+0.85	zh_forget_instructions	(?:忘记|忘掉|清空)(?:所有|之前|以前|此前)?[^\n。；;]{0,4}(?:指令|规则|提示)
+0.85	zh_reveal_system_prompt	(?:输出|泄露|透露|显示|告诉我)(?:你的|您的|系统)?(?:系统)?(?:提示词|初始指令|系统指令)
+0.80	zh_developer_mode	(?:进入|开启|启用|切换到)(?:开发者|调试|越狱|管理员)模式
+0.70	zh_you_are_now	你现在是(?:一个|一名|一位)?|你不再是[^\n。；;]{0,10}(?:助手|AI)
+0.45	zh_role_play	扮演(?:一个|一名|一位)?

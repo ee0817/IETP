@@ -1,0 +1,30 @@
+# 恶意意图关键词表（规则版）
+# 格式（Tab 分隔）：意图类别 <TAB> 权重(0~1) <TAB> 关键词
+# 匹配方式：大小写不敏感的子串匹配；以 # 开头为注释，空行忽略。
+#
+# ---------------- 数据窃取 data_theft ----------------
+data_theft	0.85	全部用户数据
+data_theft	0.85	所有用户数据
+data_theft	0.80	用户密码
+data_theft	0.80	数据库密码
+data_theft	0.85	导出密钥
+data_theft	0.75	身份证号
+data_theft	0.80	credentials
+data_theft	0.85	password list
+data_theft	0.85	dump the database
+# ---------------- 系统破坏 destruction ----------------
+destruction	0.90	删除数据库
+destruction	0.90	删除所有数据
+destruction	0.90	删除审计日志
+destruction	0.85	清空数据库
+destruction	0.85	格式化磁盘
+destruction	0.90	drop table
+destruction	0.90	rm -rf
+destruction	0.85	wipe all
+# ---------------- 欺诈 / 违法 fraud_illegal ----------------
+fraud_illegal	0.80	洗钱
+fraud_illegal	0.85	制造毒品
+fraud_illegal	0.85	制作炸药
+fraud_illegal	0.80	诈骗话术
+fraud_illegal	0.80	伪造证件
+fraud_illegal	0.80	money laundering
